@@ -10,7 +10,7 @@ $ python Galuca-Final.py
 ```
 ----------------------------------------
 
-
+テスト
 
  This is the README for GALUCA
 	Created by Luca Damasco
