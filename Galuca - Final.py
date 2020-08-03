@@ -8,19 +8,19 @@ import math
 import copy
 
 class Galaga(object):
-    baseScaleFactor = 1.8 #Changes the game Window Size 
+    baseScaleFactor = 1.8  # Changes the game Window Size 
     def __init__(self):
-        self.baseScaleFactor = Galaga.baseScaleFactor #Adjusts default window size
+        self.baseScaleFactor = Galaga.baseScaleFactor  # Adjusts default window size
         self.baseWidth = 224
         self.baseHeight = 288
-        self.baseHeader = 30 #Pixels Tall
-        self.baseFooter = 30 #Pixels Tall
+        self.baseHeader = 30  # Pixels Tall
+        self.baseFooter = 30  # Pixels Tall
         self.header = self.baseHeader * self.baseScaleFactor
         self.footer = self.baseHeader * self.baseScaleFactor
         self.baseScreenWidth = int(self.baseWidth * self.baseScaleFactor)
         self.baseScreenHeight = int((self.baseHeight + self.baseHeader +\
                             self.baseFooter)* self.baseScaleFactor)
-        self.scaleFactor = 1 #Used to adjust window size in-game
+        self.scaleFactor = 1  # Used to adjust window size in-game
 
         self.screenWidth = self.baseScreenWidth * self.scaleFactor
         self.screenHeight = self.baseScreenHeight * self.scaleFactor
@@ -108,7 +108,7 @@ class Galaga(object):
                         if self.backButton.touching(mousePos,self):
                             self.backClicked = True
                                     
-                    else: #Only make these available on home screen
+                    else:  # Only make these available on home screen
                         if self.startButton.touching(mousePos,self):
                             self.startClicked = True
                         else:
@@ -182,15 +182,15 @@ class Galaga(object):
         self.settingLevel = False
         self.musicOn = False
 
-        #Empty image for testing / Various Purposes
+        # Empty image for testing / Various Purposes
         (self.empty,self.emptywidth,self.emptyHeight) = \
         importImage("galaga_sprites/empty.png",True)
         
-        #Speed Objects
-        self.PPS = 100 * self.baseScaleFactor #Pixels per second
-        self.PPT = self.PPS / self.fps #Pixels per Tick
+        # Speed Objects
+        self.PPS = 100 * self.baseScaleFactor  # Pixels per second
+        self.PPT = self.PPS / self.fps  # Pixels per Tick
 
-        #Star Objects / Animation Parameters
+        # Star Objects / Animation Parameters
         self.starList = []
         baseStarSize = 1
         self.starSizes = [baseStarSize,baseStarSize*2,baseStarSize*3-1]
@@ -198,11 +198,11 @@ class Galaga(object):
         self.starSpeeds = [-baseStarSpeed,-int(baseStarSpeed*1.3),
                            -int(baseStarSpeed*1.6)]
 
-        #Time Objects
-        self.clock = pygame.time.Clock() #Initialize game clock
+        # Time Objects
+        self.clock = pygame.time.Clock()  # Initialize game clock
         self.milliseconds = 0
 
-        #Sound Objects
+        # Sound Objects
         self.soundFX = pygame.mixer.Channel(0)
         self.deathSounds = pygame.mixer.Channel(1)
         self.missileSounds = pygame.mixer.Channel(2)
@@ -215,17 +215,17 @@ class Galaga(object):
         pygame.mixer.Sound("galaga_sounds/music/start_screen.ogg")
         self.music.play(startScreenMusic,-1)
 
-        #Font Objects
+        # Font Objects
         textSize = int(self.header/1.8)
         self.gameFont = pygame.font.SysFont("Joystix",textSize)
 
-        #Custom Screen
+        # Custom Screen
         self.customPoints = []
         self.tempPoints = []
         self.recordPoints = False
 
     def initButtons(self):
-       #Logo
+        # Logo
         logoScale = .6
         logoFile = "galaga_sprites/galaga-logo.png"
         (self.logo,self.logoHeight,self.logoWidth) = \
@@ -240,7 +240,7 @@ class Galaga(object):
 
 
     def initStartButtons(self):
-        #Start Button
+        # Start Button
         self.startClicked = False
         startButtonLocation = (self.baseScreenWidth/2,self.baseScreenHeight*.5)
         startButtonScale = 2
@@ -254,7 +254,7 @@ class Galaga(object):
                         startButtonLocation[1])
         self.sKeyLogo = Button(sKeyLocation, startButtonScale*1.5, sKeyLogo)
 
-        #Custom Button
+        # Custom Button
         self.customClicked = False
         self.customScreen = False
         customButtonLocation = (self.baseScreenWidth/2,self.baseScreenHeight*.6)
@@ -264,7 +264,7 @@ class Galaga(object):
         self.customButton = Button(customButtonLocation,customButtonScale,
                                    customButtonFile,customLgtFile)
 
-        #How To Play
+        # How To Play
         self.howToPlay = False
         self.howToPlayClicked = False
         howToPlayLocation = (self.baseScreenWidth/2,self.baseScreenHeight*.7)
@@ -274,7 +274,7 @@ class Galaga(object):
         self.howToPlayButton = Button(howToPlayLocation,howToPlayScale,
                                       howToPlayFile,howToPlayLgt)
 
-        #Mute Button
+        # Mute Button
         self.muteMusic = False
         muteButtonLocation = (self.baseScreenWidth/10,
                               int(self.baseScreenHeight*.9))
@@ -289,7 +289,7 @@ class Galaga(object):
         self.musicOnButton = Button(muteButtonLocation,muteScale,
                                     musicOnFile,musicOnLgtFile)
 
-        #Back Button
+        # Back Button
         self.backClicked = False
         backButtonLocation = (int(self.baseScreenWidth*.9),
                               int(self.baseScreenHeight*.9))
@@ -300,7 +300,7 @@ class Galaga(object):
                                  backButtonFile,backButtonLgt)
 
     def initCustomScreenButtons(self):
-        #Reset All Button
+        # Reset All Button
         resetLoc = (self.baseScreenWidth/2,self.baseScreenHeight*.95)
         resetScale = 2
         resetButtonFile = "galaga_sprites/buttons/resetAll.png"
@@ -308,19 +308,19 @@ class Galaga(object):
         self.resetButton = Button(resetLoc,resetScale,resetButtonFile,
                                   resetButtonLgt)
 
-        #Which Enemy Button
+        # Which Enemy Button
         whichEnLoc = (self.baseScreenWidth/2,self.baseScreenHeight * .25)
         whichEnScale = 4
         whichEnFile = "galaga_sprites/buttons/whichEnemies.png"
         self.whichEnemyButton = Button(whichEnLoc,whichEnScale,whichEnFile)
 
-        #Click and Drag
+        # Click and Drag
         clickDragLoc = (self.baseScreenWidth/2,self.baseScreenHeight*.03)
         clickDragScale = 3
         clickDragFile = "galaga_sprites/buttons/clickAndDrag.png"
         self.clickDragButton = Button(clickDragLoc,clickDragScale,clickDragFile)
 
-        #Finish Button
+        # Finish Button
         finishLoc = (self.baseScreenWidth * .7,self.baseScreenHeight * .5)
         finishScale = 3
         finishFile = "galaga_sprites/buttons/finish.png"
@@ -328,7 +328,7 @@ class Galaga(object):
 
         self.finishButton = Button(finishLoc,finishScale,finishFile,finishLgt)
 
-        #Cancel Button
+        # Cancel Button
         cancelLoc = (self.baseScreenWidth * .3,self.baseScreenHeight * .5)
         cancelScale = 3
         cancelFile = "galaga_sprites/buttons/cancel.png"
@@ -336,10 +336,10 @@ class Galaga(object):
 
         self.cancelButton = Button(cancelLoc,cancelScale,cancelFile,cancelLgt)
 
-        #Enemy Select
+        # Enemy Select
         enemyButtonScale = 4
 
-        #ButterFly
+        # ButterFly
         butterflyLoc = (self.baseScreenWidth * .3,self.baseScreenHeight*.4)
         butterflyFile = "galaga_sprites/buttons/butterfly.png"
 
@@ -350,7 +350,7 @@ class Galaga(object):
         self.butterflyButtonLgt = Button(butterflyLoc,enemyButtonScale,
                                 butterflyLgt)
 
-        #Bee
+        # Bee
         beeLoc = (self.baseScreenWidth * .7,self.baseScreenHeight*.4)
         beeFile = "galaga_sprites/buttons/bee.png"
 
@@ -359,7 +359,7 @@ class Galaga(object):
         self.beeButton = Button(beeLoc,enemyButtonScale,beeFile,beeLgt)
         self.beeButtonLgt = Button(beeLoc,enemyButtonScale,beeLgt)
 
-        #Galaga
+        # Galaga
         galagaLoc = (self.baseScreenWidth*.5,self.baseScreenHeight*.4)
         galagaFile = "galaga_sprites/buttons/galaga.png"
 
@@ -369,7 +369,7 @@ class Galaga(object):
                                    galagaLgt)
         self.galagaButtonLgt = Button(galagaLoc,enemyButtonScale,galagaLgt)
 
-        #Custom Screen
+        # Custom Screen
         customScreenLoc = (self.baseScreenWidth/2,self.baseScreenHeight/20)
         customScreenScale = Galaga.baseScaleFactor * .9
         customScreenFile = "galaga_sprites/custom/screenRep2.png"
@@ -377,14 +377,14 @@ class Galaga(object):
         self.customScreenRep = Button(customScreenLoc,customScreenScale,
                                    customScreenFile,None,"t")
 
-        #Save Button
+        # Save Button
         saveLoc = (self.baseScreenWidth * .38,self.baseScreenHeight * .85)
         saveScale = 3
         saveFile = "galaga_sprites/buttons/save.png"
         saveLgt = "galaga_sprites/buttons/saveLgt.png"
         self.saveButton = Button(saveLoc,saveScale,saveFile,saveLgt)
 
-        #Delete Button
+        # Delete Button
         deleteLoc = (self.baseScreenWidth*.6,self.baseScreenHeight *.85)
         deleteScale = 3
         deleteFile = "galaga_sprites/buttons/delete.png"
@@ -392,33 +392,33 @@ class Galaga(object):
         self.deleteButton = Button(deleteLoc,deleteScale,deleteFile,deleteLgt)
 
     def initHowToPlayButtons(self):
-        #Plain Enemies
+        # Plain Enemies
         
-        #PlainButterfly
+        # PlainButterfly
         butterflyLoc = (self.baseScreenWidth*.2,self.baseScreenHeight*.65)
         butterflyScale = 3
         butterflyFile = "galaga_sprites/buttons/plainButterfly.png"
         self.plainButterfly = Button(butterflyLoc,butterflyScale,butterflyFile)
 
-        #PlainBee
+        # PlainBee
         beeLoc = (self.baseScreenWidth * .4,self.baseScreenHeight*.65)
         beeScale = 3
         beeFile = "galaga_sprites/buttons/plainBee.png"
         self.plainBee = Button(beeLoc,beeScale,beeFile)
 
-        #PlainGalaga
+        # PlainGalaga
         galagaLoc = (self.baseScreenWidth * .3, self.baseScreenHeight*.65)
         galagaScale = 3
         galagaFile = "galaga_sprites/buttons/plainGalaga.png"
         self.plainGalaga = Button(galagaLoc,galagaScale,galagaFile)
 
-        #Missile
+        # Missile
         missileLoc = (self.baseScreenWidth * .1,self.baseScreenHeight*.65)
         missileScale = Galaga.baseScaleFactor
         missileFile = "galaga_sprites/missiles/enemy_missile.png"
         self.missileButton = Button(missileLoc,missileScale,missileFile)
 
-        #Left arrow
+        # Left arrow
         scale = 1.5
         leftArrowLoc = (self.baseScreenWidth * .2,self.baseScreenHeight*.4)
         leftArrowFile = "galaga_sprites/buttons/left.png"
@@ -432,26 +432,26 @@ class Galaga(object):
         rightArrowFile = "galaga_sprites/buttons/right.png"
         self.rightArrow = Button(rightArrowLoc,scale,rightArrowFile)
 
-        #Move And Shoot
+        # Move And Shoot
         moveShootScale = 4
         moveShootLoc = (self.baseScreenWidth*.75,self.baseScreenHeight *.45)
         moveShootFile = "galaga_sprites/buttons/moveAndShoot.png"
         self.moveShootButton = Button(moveShootLoc,moveShootScale,moveShootFile)
 
-        #Avoid These
+        # Avoid These
         avoidScale = 4
         avoidLoc = (self.baseScreenWidth * .75, self.baseScreenHeight*.65)
         avoidFile = "galaga_sprites/buttons/avoidThese.png"
         self.avoidThese = Button(avoidLoc,avoidScale,avoidFile)
 
-        #Have Fun
+        # Have Fun
         haveFunScale = 4
         haveFunLoc = (self.baseScreenWidth *.5,self.baseScreenHeight*.75)
         haveFunFile = "galaga_sprites/buttons/haveFun.png"
         self.haveFunButton = Button(haveFunLoc,haveFunScale,haveFunFile)
         
     def initInGameButtons(self):
-        #Get Ready
+        # Get Ready
         getReadyLocation = (self.baseScreenWidth/2,self.baseScreenHeight*.6)
         getReadyScale = 3
         getReadyFile = "galaga_sprites/buttons/getReady.png"
@@ -484,8 +484,8 @@ class Galaga(object):
         self.saveToButterfly = False
         self.saveToGalaga = False
         for point in self.tempPoints:
-            #.9 == scale of the custom screen
-            #.05 is the indent of the custom screen
+            # .9 == scale of the custom screen
+            # .05 is the indent of the custom screen
             x = int(round(((point[0] - self.baseScreenWidth*.05)/.9)))
             y = int(round(((point[1] - self.baseScreenHeight*.05)/.9))+self.header)
             self.customPoints.append((x,y))
@@ -511,13 +511,13 @@ class Galaga(object):
         self.customPoints = []
 
     def resetPaths(self):
-        #Default Paths == 1 and 2
-        #Butterfly defaults : 1
+        # Default Paths == 1 and 2
+        # Butterfly defaults : 1
         butterflyFile = open("paths/butterflyPaths.txt","w")
         butterflyFile.write("1")
         butterflyFile.close()
 
-        #Bee defaults : 1 and 2
+        # Bee defaults : 1 and 2
         beeFile = open("paths/beePaths.txt","a")
         beeFile.truncate()
         beeFile.write("1")
@@ -525,7 +525,7 @@ class Galaga(object):
         beeFile.write("2")
         beeFile.close()
 
-        #Galaga defaults: 1 and 2
+        # Galaga defaults: 1 and 2
         galagaFile = open("paths/galagaBossPaths.txt","a")
         galagaFile.truncate()
         galagaFile.write("1")
@@ -539,7 +539,7 @@ class Galaga(object):
     def drawStartScreen(self):
         pygame.draw.rect(self.screen,(0,0,0),
         ((0,0),(self.baseScreenWidth * self.scaleFactor,
-                self.baseScreenHeight*self.scaleFactor))) #Draw Black Background
+                self.baseScreenHeight*self.scaleFactor)))  # Draw Black Background
         self.drawStars()
         if self.customScreen:
             self.drawCustomScreen()
@@ -616,20 +616,20 @@ class Galaga(object):
     def drawHowToPlayButtons(self):
         self.backButton.draw(self)
         
-        #Avoid These
+        # Avoid These
         self.avoidThese.draw(self)
         self.plainBee.draw(self)
         self.plainButterfly.draw(self)
         self.plainGalaga.draw(self)
         self.missileButton.draw(self)
 
-        #Use These
+        # Use These
         self.leftArrow.draw(self)
         self.rightArrow.draw(self)
         self.spaceBar.draw(self)
         self.moveShootButton.draw(self)
 
-        #haveFun
+        # haveFun
         self.haveFunButton.draw(self)
         
         if self.muteMusic == False:
@@ -671,7 +671,7 @@ class Galaga(object):
                 self.moveGalaga()
                 self.drawGalaga()
                 self.gameOverMsg()
-            pygame.time.delay(int(1000/self.fps)) #1000 milliseconds/fps
+            pygame.time.delay(int(1000/self.fps)) # 1000 milliseconds/fps
             if self.exitGame:
                 break
 
@@ -687,7 +687,7 @@ class Galaga(object):
     def settingLevelAnimation(self):
         self.moveGalaga()
         self.drawGalaga()
-        pygame.time.delay(int(1000/self.fps)) #1000 milliseconds/fps
+        pygame.time.delay(int(1000/self.fps)) # 1000 milliseconds/fps
         
     def resizeWindow(self,event):
         (newWidth,newHeight) = event.size
@@ -712,10 +712,10 @@ class Galaga(object):
         self.screen =\
         pygame.display.set_mode(self.screenSize,RESIZABLE)
 
-        pygame.display.set_caption(self.gameTitle) #Window Caption (title)
+        pygame.display.set_caption(self.gameTitle) # Window Caption (title)
 
         (iconImage,iconWidth,iconHeight) =\
-        importImage('galaga_sprites/fighter/fighter.png',True) #True == alpha
+        importImage('galaga_sprites/fighter/fighter.png',True) # True == alpha
 
         pygame.display.set_icon(iconImage)
         pygame.display.flip()
@@ -801,7 +801,7 @@ class Galaga(object):
         bossGalaga = self.formation.bossGalaga
         butterflies = self.formation.butterflies
         bees = self.formation.bees
-        for enemy in xrange(self.formation.totalEnemies):
+        for enemy in range(self.formation.totalEnemies):
             position = self.formation.positionList[enemy]
             if enemy < bossGalaga:
                 self.enemyList.append(EnemyGalaga(position[0],position[1],self))
@@ -817,51 +817,51 @@ class Galaga(object):
         self.fighter = Fighter(self)
         
     def initObjects(self):
-        #Game Start Objects
+        # Game Start Objects
         self.gameOver = False
 
         self.hiScore = self.findHiScore()
         
         self.fighterIsDown = False
 
-        #Missile Objects
+        # Missile Objects
         self.missileList = []
         self.enemyMissiles = []
 
-        #Enemy Objects
+        # Enemy Objects
         self.enemyList = []
 
-        #Formation Objects
-        self.formation = Formations(1,self) #Basic Formation
+        # Formation Objects
+        self.formation = Formations(1,self) # Basic Formation
 
-        #Explosion animation Objects
+        # Explosion animation Objects
         self.explosionList = []
 
-        #Score Objects
+        # Score Objects
         self.score = 0
 
-        #Shot Objects
+        # Shot Objects
         self.shotsFired = 0
         self.shotsHit = 0
 
-        #Gameplay objects
+        # Gameplay objects
         self.score = 0
         self.lives = 3
 
-        #Level Objects
+        # Level Objects
         self.level = 1
         self.levelChecker = 0
         self.maxLevelSeconds = 3
         
-        #Text Markers
-        #HighScore
+        # Text Markers
+        # HighScore
         highScoreLocation = (self.baseScreenWidth/2,0)
         highScoreScale = 3
         highScoreFile = "galaga_sprites/text/high_score.png"
         justify = "t"
         self.highScoreImage = Button(highScoreLocation,highScoreScale,
                                      highScoreFile,None,justify)
-        #1up
+        # 1up
         oneUpLocation = (self.baseScreenWidth/5,0)
         oneUpScale = 3
         oneUpFile = "galaga_sprites/text/1up.png"
@@ -875,7 +875,7 @@ class Galaga(object):
         pygame.display.update()
 
     def drawScreen(self):
-        self.screen.fill((0,0,0))# Black Backdrop
+        self.screen.fill((0,0,0))  # Black Backdrop
         self.drawStars()
         self.drawFighter()
         self.drawFooter()
@@ -919,7 +919,7 @@ class Galaga(object):
         xPosition = self.fighter.width * 2
         yPosition = self.baseScreenHeight * self.scaleFactor - self.footer
 
-        for life in xrange(self.lives-1):
+        for life in range(self.lives-1):
             self.screen.blit(self.fighter.fighterImage,(xPosition,yPosition))
             xPosition -= self.fighter.width + self.fighter.width/2
 
@@ -954,10 +954,10 @@ class Galaga(object):
         starLife = self.fps/2
         starWait = self.fps/10
         for star in self.starList:
-            if star.flash == starLife: #Reset Star Flash
+            if star.flash == starLife:  # Reset Star Flash
                 star.flash = 0
-            elif star.flash > starWait: #Only draw if flash is on.  
-                star.draw(self) #Draw method
+            elif star.flash > starWait:  # Only draw if flash is on.  
+                star.draw(self)  # Draw method
                 star.flash += 1
             else:
                 star.flash += 1
@@ -1013,10 +1013,10 @@ class Galaga(object):
         if self.fighterIsDown:
             self.fighterDown()
         else:
-            if self.fighter.vx < 0: #Moving Left
+            if self.fighter.vx < 0:  # Moving Left
                 if self.fighter.x >= 0:
                     self.fighter.x += self.fighter.vx
-            elif self.fighter.vx > 0: #Moving Right
+            elif self.fighter.vx > 0:  # Moving Right
                 if self.fighter.x <= self.baseScreenWidth \
                  - self.fighter.width: 
                     self.fighter.x += self.fighter.vx
@@ -1025,9 +1025,9 @@ class Galaga(object):
         numberOfStars = self.baseScreenHeight/20
         startingStars = numberOfStars-1
         if len(self.starList) < startingStars:
-               self.starList.append(Star.createStar(self,True))#Random star
+               self.starList.append(Star.createStar(self,True))  # Random star
         elif len(self.starList) < numberOfStars:
-            self.starList.append(Star.createStar(self,False))#Non random star
+            self.starList.append(Star.createStar(self,False))  # Non random star
         for star in self.starList:
             star.move()
         self.starList =[star for star in self.starList if star.isOnScreen(self)]
@@ -1035,7 +1035,7 @@ class Galaga(object):
     def moveMissiles(self):
         for missile in self.missileList:
             missile.move()
-        #Next Lines: Removes all missiles which have traveled off screen.
+        # Next Lines: Removes all missiles which have traveled off screen.
         self.missileList = [missile for missile in self.missileList \
                             if (missile.isOnScreen(self) and missile.isAlive)]
         for missile in self.enemyMissiles:
@@ -1177,9 +1177,9 @@ class Galaga(object):
         return max(hiScores)
 
  
-###################
-#Utility Functions#
-###################
+#####################
+# Utility Functions #
+#####################
                     
 def importImage(filePath,alpha,scaleFactor=Galaga.baseScaleFactor):
         """Imports an image and rescales it by the proper offset."""
@@ -1202,10 +1202,10 @@ def almostEqual(val1,val2,delta):
     else:
         return False
 
-################################
-#       Physics Objects        #
-#Anything that moves on screen!#
-################################
+##################################
+#       Physics Objects          #
+# Anything that moves on screen! #
+##################################
 
 class PhysObj(object):
     def __init__(self,x,y,vx,vy):
@@ -1240,9 +1240,9 @@ class PhysObj(object):
 
     def importSprite(self,imageFilePath,alpha):
         (self.image,self.height,self.width) = \
-              importImage(imageFilePath,True) #True == Alpha
+              importImage(imageFilePath,True)  # True == Alpha
 
-    #Rotation function taken from: http://www.pygame.org/wiki/RotateCenter
+    # Rotation function taken from: http://www.pygame.org/wiki/RotateCenter
     def rotateSprite(self,angle):
         """rotate an image while keeping its center and size"""
         orig_rect = self.image.get_rect()
@@ -1250,10 +1250,10 @@ class PhysObj(object):
         rot_rect = orig_rect.copy()
         rot_rect.center = rot_image.get_rect().center
         rot_image = rot_image.subsurface(rot_rect).copy()
-        self.image = rot_image #My Modification 
-        
+        self.image = rot_image  # My Modification 
+
     def collisionWith(self,other,point = False):
-        if point == False: #Colliding with an object
+        if point == False:  # Colliding with an object
             hitBoxX0 = self.x-other.width
             hitBoxY0 = self.y
             hitBoxX1 = self.x+self.width+other.width
@@ -1263,12 +1263,12 @@ class PhysObj(object):
                 return True
             else:
                 return False
-        else: #Colliding with a point.
-            #Uses Radial hit detection
+        else:  # Colliding with a point.
+            # Uses Radial hit detection
             pointX = other[0]
             pointY = other[1]
             
-            offset = self.width/8 ##Tested Variable
+            offset = self.width/8  # Tested Variable
             
             centerX = self.x + self.width/2 
             centerY = self.y + self.height/2
@@ -1301,12 +1301,12 @@ class PhysObj(object):
 
         return (self.x + xChange,self.y + yChange)
         
-###########                
-#Missiles!#
-###########
+#############                
+# Missiles! #
+#############
             
 class Missile(PhysObj):
-    maxMissiles = 2 #Classic Galaga only allowed 4 missiles on screen. 
+    maxMissiles = 2  # Classic Galaga only allowed 4 missiles on screen. 
     def __init__(self,x,y,vx,vy,shooter):
         self.shooter = shooter
         self.importSprite()
@@ -1319,9 +1319,9 @@ class Missile(PhysObj):
             imageFilePath = "galaga_sprites/missiles/enemy_missile.png"
         super(Missile,self).importSprite(imageFilePath,True)
 
-#########
-#Fighter#
-#########
+###########
+# Fighter #
+###########
         
 class Fighter(PhysObj):
     def __init__(self,galaga):
@@ -1342,21 +1342,21 @@ class Fighter(PhysObj):
     def setInitialLocation(self,galaga):
         self.x = galaga.screenWidth/2 - self.width/2
         self.y = galaga.screenHeight - self.height - galaga.footer
-        #Next Lines: Inital Speed of fighter is 0. 
+        # Next Lines: Inital Speed of fighter is 0. 
         self.vx = 0
         self.vy = 0
 
     def fireMissile(self,missileSpeed):
-        #Set base parameters
+        # Set base parameters
         vx = 0
         vy = missileSpeed 
         shooter = "fighter"
 
-        #Play missile Sound
+        # Play missile Sound
         sound = pygame.mixer.Sound('galaga_sounds/fighter/fighter_shot1.wav')
         sound.play()
 
-        #Return Missile Instance
+        # Return Missile Instance
         return Missile(self.x+self.width/2,self.y,vx,vy,shooter)
 
     def collisionWith(self,other):
@@ -1372,9 +1372,9 @@ class Fighter(PhysObj):
             return False
 
 
-########
-#Stars!#
-########
+##########
+# Stars! #
+##########
     
 class Star(PhysObj):
     def __init__(self,x,y,vx,vy,size,flash):
@@ -1404,9 +1404,9 @@ class Star(PhysObj):
         pygame.draw.circle(galaga.screen,(255,255,255),\
         (int(self.x*galaga.scaleFactor),int(self.y*galaga.scaleFactor)),
         self.size)
-##########
-#Enemies!#
-##########
+############
+# Enemies! #
+############
         
 class Enemy(PhysObj):
     flutterImage = True
@@ -1418,7 +1418,7 @@ class Enemy(PhysObj):
     maxMissiles = 2
     missilesFired = 0
     shotChance = .01
-    speedValue = 1 # Higher Values == Faster Movement 
+    speedValue = 1  # Higher Values == Faster Movement 
     
     def __init__(self,x,y,vx,vy):
         self.x = x
@@ -1445,7 +1445,7 @@ class Enemy(PhysObj):
                 self.flutterImage = False
         else:
             self.flutterCount += 1
-            #Next Line: "Flutter" Twice per second.
+            # Next Line: "Flutter" Twice per second.
             if self.flutterCount == int(galaga.fps)/2:  
                 self.flutterImage = True
 
@@ -1510,7 +1510,7 @@ class Enemy(PhysObj):
             self.y = self.floatY
             self.vx = self.floatVX
             self.vy = self.floatVY
-        elif self.isFlying: #Enemy is flying.
+        elif self.isFlying:  # Enemy is flying.
             speed = self.speed
             startPoint = self.center
             targetPoint = self.attackPath[self.attackIndex]
@@ -1523,11 +1523,11 @@ class Enemy(PhysObj):
                     targetPoint = self.attackPath[self.attackIndex]                    
                     (self.vx,self.vy) = Movement.calculateVelocity(startPoint,
                     targetPoint,galaga.PPT,speed)
-            elif self.collisionWith(targetPoint,True): #True == collide with point
+            elif self.collisionWith(targetPoint,True):  # True == collide with point
                 self.hitPoint(galaga)
             elif self.finishedAttack(galaga):
                 self.reposition(galaga)
-            if (self.vx != 0 and self.vy != 0): #Accidental "double" point.
+            if (self.vx != 0 and self.vy != 0):  # Accidental "double" point.
                 self.angle = Movement.calculateAngle(self.vx,self.vy)
             if self.isAttacking:
                 self.attemptShot(galaga)
@@ -1539,7 +1539,7 @@ class Enemy(PhysObj):
         targetPoint = self.attackPath[self.attackIndex]
         speed = self.speed
         self.attackIndex += 1
-        if self.attackIndex==len(self.attackPath):#Completed the movement
+        if self.attackIndex==len(self.attackPath):  # Completed the movement
             if self.isAttacking:
                 self.attackIndex = 0
                 self.reposition(galaga)
@@ -1579,7 +1579,7 @@ class Enemy(PhysObj):
         
 
     def reposition(self,galaga):
-        #Reposition to home
+        # Reposition to home
         self.x = self.floatX
         self.y = self.floatY
         self.vx = self.floatVX
@@ -1594,7 +1594,7 @@ class Enemy(PhysObj):
         chosen = 0
         maxAttempts = 6
         maxEnemies = Enemy.maxAttackingEnemies
-        for attempt in xrange(maxAttempts):
+        for attempt in range(maxAttempts):
             if (chosen < maxEnemies):
                 enemy = random.choice(galaga.enemyList)
                 if enemy not in attackingEnemies and enemy.isAttacking == False:
@@ -1607,7 +1607,7 @@ class Enemy(PhysObj):
     def fireMissile(self,galaga):
         startPoint = self.centerCall()
         endPoint = galaga.fighter.centerCall()
-        speed = 1.4 #int(galaga.baseScreenHeight/galaga.fps*1.5)
+        speed = 1.4  # int(galaga.baseScreenHeight/galaga.fps*1.5)
 
         (vx,vy) = Movement.calculateVelocity(startPoint,endPoint,galaga.PPT,
         speed)
@@ -1663,7 +1663,7 @@ class EnemyGalaga(Enemy):
     def importSprites(self,strongClosed,strongOpen,weakClosed,weakOpen):
         
         (self.strongClosedImage,self.strongClosedHeight,self.strongClosedWidth)\
-              = importImage(strongClosed,True) #True == Alpha
+              = importImage(strongClosed,True)  # True == Alpha
         (self.strongOpenImage,self.strongOpenHeight,self.strongOpenWidth)\
               = importImage(strongOpen,True)
         
@@ -1733,9 +1733,9 @@ class EnemyBee(Enemy):
         "galaga_sprites/enemies/bee/bee_open.png"
         super(EnemyBee,self).importSprites(closedImagePath,openImagePath)
         
-#############
-#Explosions!#
-#############
+###############
+# Explosions! #
+###############
         
 class Explosion(PhysObj):
     def __init__(self,character,galaga):
@@ -1769,9 +1769,9 @@ class Explosion(PhysObj):
         self.y = self.characterY + self.characterHeight/2 - self.height/2
         super(Explosion,self).draw(galaga)
         
-#############
-#Formations!#
-#############
+###############
+# Formations! #
+###############
         
 class Formations(object):
     def __init__(self,formation,galaga):
@@ -1790,28 +1790,28 @@ class Formations(object):
         
     def makeFormation(self,galaga):
         positionList = []
-        #Next Line: 21 Pixels is the base size of an enemy location
+        # Next Line: 21 Pixels is the base size of an enemy location
         self.offset = offset = 21 * Galaga.baseScaleFactor
         if self.formation == 1:
-            #Central Points of Formation, used to apply "floating" animation
-            #effect. 
+            # Central Points of Formation, used to apply "floating" animation
+            # effect. 
             self.formationX = galaga.screenWidth/2
             self.formationY = self.offset + galaga.header
             totalEnemies = self.totalEnemies
             bossGalaga = self.bossGalaga
             enemiesPerRow = self.enemiesPerRow
-            for position in xrange(totalEnemies):
-                if (position <= (bossGalaga-1)): #Top 4 Boss Galagas
+            for position in range(totalEnemies):
+                if (position <= (bossGalaga-1)):  # Top 4 Boss Galagas
                     row = 0
                     rowPosition = position
                     posX = ((galaga.screenWidth/2 - offset*(bossGalaga/2))\
                             +offset/2+offset*rowPosition)
-                    posY = (offset + offset*row + galaga.header) #1 empty space above enemies
+                    posY = (offset + offset*row + galaga.header)  # 1 empty space above enemies
                     positionList.append([posX,posY])
-                else: #Basic enemy
+                else:  # Basic enemy
                     row = (position-bossGalaga)/enemiesPerRow + 1
                     rowPosition = position % enemiesPerRow
-                    #Leftmost Position In Row + Actual Row Position
+                    # Leftmost Position In Row + Actual Row Position
                     posX = ((galaga.screenWidth/2 - offset*(enemiesPerRow/2))\
                             +offset/2+offset*rowPosition)
                     
@@ -1819,16 +1819,16 @@ class Formations(object):
                     positionList.append([posX,posY])
         self.positionList = positionList
 
-###########
-#Movement!#
-###########
+#############
+# Movement! #
+#############
 
 class Movement(object):
     @classmethod
     def calculateFloat(self,character,galaga):
         (xFloat,yFloat) = self.floatDistance(character,galaga)
         
-        #Distance traveled per tick
+        # Distance traveled per tick
         xTick = xFloat / (galaga.fps)
         yTick = yFloat / (galaga.fps)
 
@@ -1836,19 +1836,19 @@ class Movement(object):
     
     @classmethod    
     def floatDistance(self,character,galaga):
-        #Calculate furthest possible x and y position from formation center
+        # Calculate furthest possible x and y position from formation center
         wideOffset=abs(galaga.formation.offset * galaga.formation.enemiesPerRow)
         heightOffset=(galaga.formation.offset * galaga.formation.rows)
 
-        #Calculate Character's distance from formation center
+        # Calculate Character's distance from formation center
         xDistance = -(galaga.formation.formationX - character.homeX)
         yDistance = -(galaga.formation.formationY - character.homeY)
 
-        #Calculate Ratio of distance from formation center
+        # Calculate Ratio of distance from formation center
         xRatio = xDistance/(wideOffset*1.0)
         yRatio = yDistance/(heightOffset*1.0)
 
-        #Total Distance character should travel while floating
+        # Total Distance character should travel while floating
         xFloat = galaga.formation.offset * xRatio
         yFloat = galaga.formation.offset * yRatio
 
@@ -1868,15 +1868,15 @@ class Movement(object):
         (startX,startY) = (startPoint[0],startPoint[1])
         (targetX,targetY) = (targetPoint[0],targetPoint[1])
 
-        #"Hypotenuse"
+        # "Hypotenuse"
         distance = ((targetX - startX)**2 + (targetY - startY)**2)**0.5
         if almostEqual(distance,0,.00000001):
             return (0,0)
 
-        #Regulates speed based on distance. 
+        # Regulates speed based on distance. 
         velocity = distance / PPT #Pixels Per Tick
     
-        #Total Distance traveled in x and y planes. 
+        # Total Distance traveled in x and y planes. 
         vector = ((targetX - startX),(targetY - startY))
 
         xVelocity =  (vector[0] / velocity) * speed 
@@ -1895,7 +1895,7 @@ class Movement(object):
 
     @classmethod
     def calculateAngle(self,vx,vy):
-        #Undefined Slopes
+        # Undefined Slopes
         if (vx < 0 and vy == 0):
             angle = 90
         elif (vx > 0 and vy ==0):
@@ -1903,15 +1903,15 @@ class Movement(object):
         elif (vy == 0 and vx == 0):
             return None
         else:
-            if vy > 0: #Moving Downward    
+            if vy > 0: # Moving Downward    
                 angle = math.degrees(math.atan(vx/vy)) + 180 #Inverts image
             else: 
                 angle = math.degrees(math.atan(vx/vy))
         return angle
     
-#######
-#PATHS#
-#######
+#########
+# PATHS #
+#########
 
 class Paths(object):
 
@@ -1945,10 +1945,10 @@ class Paths(object):
         
         
     @classmethod
-    def basicPath(self,enemy,fighter): #Basic single swirl path at midpoint. 
+    def basicPath(self,enemy,fighter):  # Basic single swirl path at midpoint. 
         pointList = []
 
-        enemyPoint = enemy.centerCall() #First Point
+        enemyPoint = enemy.centerCall()  # First Point
         pointList.append(enemyPoint)
 
         if enemy.x - fighter.x < 0:
@@ -1961,13 +1961,13 @@ class Paths(object):
         midPoint = Paths.midpoint(enemyPoint,fighter.centerCall())
         pointList.append(midPoint)
 
-        #Next Line: 200 == size in pixels
+        # Next Line: 200 == size in pixels
         newPoints = self.fullCircle(pointList[len(pointList)-1],flipX,200)
         pointList.extend(newPoints)
 
         fighterPoint = fighter.centerCall()
         
-        #End Point off the screen
+        # End Point off the screen
         endPoint = (fighterPoint[0],fighterPoint[1]+fighter.height*2)
 
         pointList.append(fighterPoint)
@@ -2009,7 +2009,7 @@ class Paths(object):
 
         pointList.append(sideOfFighter)
 
-        #Next Line: 300 == Size in pixels
+        # Next Line: 300 == Size in pixels
         newPoints = self.fullCircle(pointList[len(pointList)-1],flipX,350)
         pointList.extend(newPoints)
 
@@ -2021,13 +2021,13 @@ class Paths(object):
     @classmethod
     def curve(self,lastPoint,degreeTurn,size,flipX,flipY):
         pointList = [lastPoint]
-        angleIncrement = 5 #Tighter increments produce smoother curves
-        pointIndex = 0 #What is the index of the last point in the list?
-        angleIndex = 1 #Which angle measurement is this? 
-        circumference = size * Galaga.baseScaleFactor #Size of curve.
-        steps = int(degreeTurn / angleIncrement) #Degree Turn 
-        stepDistance = int(circumference / steps) #hypotenuse
-        for step in xrange(steps-1):
+        angleIncrement = 5  # Tighter increments produce smoother curves
+        pointIndex = 0  # What is the index of the last point in the list?
+        angleIndex = 1  # Which angle measurement is this? 
+        circumference = size * Galaga.baseScaleFactor  # Size of curve.
+        steps = int(degreeTurn / angleIncrement)  # Degree Turn 
+        stepDistance = int(circumference / steps)  # hypotenuse
+        for step in range(steps-1):
             angle = math.radians(angleIncrement * angleIndex)
             xDifference = (math.sin(angle) * stepDistance)
             yDifference = (math.cos(angle) * stepDistance)
@@ -2048,14 +2048,14 @@ class Paths(object):
     @classmethod
     def starting180Turn(self,lastPoint,flipX):
         pointList = [lastPoint]
-        angleIncrement = 5 #Tighter increments produce smoother curves
-        pointIndex = 0 #What is the index of the last point in the list?
-        angleIndex = 1 #Which angle measurement is this? 
-        circumference = 100 * Galaga.baseScaleFactor #Size of curve.
+        angleIncrement = 5  # Tighter increments produce smoother curves
+        pointIndex = 0  # What is the index of the last point in the list?
+        angleIndex = 1  # Which angle measurement is this? 
+        circumference = 100 * Galaga.baseScaleFactor  # Size of curve.
         degreeTurn = 180
-        steps = int(degreeTurn / angleIncrement) #Degree Turn 
-        stepDistance = int(circumference / steps) #hypotenuse
-        for step in xrange(steps-1):
+        steps = int(degreeTurn / angleIncrement)  # Degree Turn 
+        stepDistance = int(circumference / steps)  # hypotenuse
+        for step in range(steps-1):
             angle = math.radians(angleIncrement * angleIndex)
             xDifference = (math.sin(angle) * stepDistance)
             yDifference = (math.cos(angle) * stepDistance)
@@ -2074,18 +2074,18 @@ class Paths(object):
     @classmethod
     def fullCircle(self,lastPoint,flipX,size):
         pointList = [lastPoint]
-        angleIncrement = 5 #Tighter increments produce smoother curves
-        pointIndex = 0 #What is the index of the last point in the list?
-        angleIndex = 1#Which angle measurement is this? 
-        circumference = size * Galaga.baseScaleFactor #Size of curve.
+        angleIncrement = 5  # Tighter increments produce smoother curves
+        pointIndex = 0  # What is the index of the last point in the list?
+        angleIndex = 1  # Which angle measurement is this? 
+        circumference = size * Galaga.baseScaleFactor  # Size of curve.
         degreeTurn = 360
-        steps = int(degreeTurn / angleIncrement) #Degree Turn 
-        stepDistance = int(circumference / steps) #hypotenuse
-        for step in xrange(steps-1):
+        steps = int(degreeTurn / angleIncrement)  # Degree Turn 
+        stepDistance = int(circumference / steps)  # hypotenuse
+        for step in range(steps-1):
             angle = math.radians(angleIncrement * angleIndex)
             xDifference = (math.sin(angle) * stepDistance)
             yDifference = (math.cos(angle) * stepDistance)
-            if flipX: # Which side is the enemy on?
+            if flipX:  # Which side is the enemy on?
                 xDifference = -xDifference
             lastPointX = pointList[pointIndex][0]
             lastPointY = pointList[pointIndex][1]
@@ -2096,9 +2096,9 @@ class Paths(object):
             pointIndex += 1
         return pointList
 
-##########
-#BUTTONS!#
-##########
+############
+# BUTTONS! #
+############
 
 class Button(object):
     buttonList = []
@@ -2112,10 +2112,10 @@ class Button(object):
         importImage(self.regFile,True,self.scale)
         (self.lgtImage,self.lgtImageHeight,self.lgtImageWidth) = \
         importImage(self.lgtFile,True,self.scale)
-        if justify == "c": #center
+        if justify == "c":  # center
             (self.x,self.y) = (location[0] - self.regImageWidth/2,
                                location[1] - self.regImageHeight/2)
-        elif justify == "t": #top
+        elif justify == "t":  # top
             (self.x,self.y) = (location[0] - self.regImageWidth/2,
                                location[1])
         else:
@@ -2146,7 +2146,3 @@ class Button(object):
                                  int(self.y * galaga.scaleFactor)))
 
 Galaga()
-
-  
-
-        
