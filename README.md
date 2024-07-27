@@ -6,7 +6,7 @@
 ```
 $ unzip Galuca-master.zip
 $ cd Galuca-master
-$ python 'Galuca-Final.py'
+$ python 'Galuca - Final.py'
 ```
 ----------------------------------------
 
